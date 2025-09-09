@@ -5,10 +5,11 @@ using System.Collections;
 
 public class LoadingManager : MonoBehaviour
 {
-    public Slider progressBar; // Arrastra el Slider en el Inspector
-    public string nextScene = "MenuInicialScene"; // Escena destino
-    public float minLoadTime = 3f; // Tiempo mínimo de carga simulada
-    public float maxLoadTime = 5f; // Tiempo máximo de carga simulada
+    [Header("Asignar en el Inspector")]
+    public Slider progressBar; 
+    public string nextScene = "MenuInicialScene"; 
+    public float minLoadTime = 2f; 
+    public float maxLoadTime = 5f; 
 
     void Start()
     {
@@ -16,22 +17,25 @@ public class LoadingManager : MonoBehaviour
         {
             Debug.LogError("Debes asignar el Slider en el Inspector.");
             return;
-        }
+        }    
+        progressBar.value = 0;
+        progressBar.minValue = 0;
+        progressBar.maxValue = 100;
         StartCoroutine(FakeLoading());
     }
 
     IEnumerator FakeLoading()
-    {       
+    {
         float loadTime = Random.Range(minLoadTime, maxLoadTime);
         float elapsed = 0f;
         while (elapsed < loadTime)
         {
             elapsed += Time.deltaTime;
-            float progress = Mathf.Clamp01(elapsed / loadTime);
+            float progress = Mathf.Clamp01(elapsed / loadTime) * 100f;
             progressBar.value = progress;
             yield return null;
         }
-        // Cuando la barra llega al 100%, carga la escena
+        progressBar.value = 100f;
         SceneManager.LoadScene(nextScene);
     }
 }
