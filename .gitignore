@@ -21,7 +21,14 @@ MemoryCaptures/
 *.opendb
 *.VC.db
 
+# Visual Studio cache folders
+.vs/
+
 # Package files
 *.apk
 *.aab
 *.unitypackage
+
+# VS Code settings should be committed (optional)
+!.vscode/
+
