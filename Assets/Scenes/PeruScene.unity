@@ -761,8 +761,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 656.889, y: 5.682}
-  m_SizeDelta: {x: 435.498, y: 504.178}
+  m_AnchoredPosition: {x: 663.12, y: -3.665}
+  m_SizeDelta: {x: 447.96, y: 585.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &43460961
 MonoBehaviour:
@@ -29429,8 +29429,8 @@ MonoBehaviour:
   resultadoTexto: {fileID: 467895483}
   cerrarBtn: {fileID: 2014548017}
   resultadoImagen: {fileID: 43460961}
-  imagenAprobado: {fileID: 0}
-  imagenFallado: {fileID: 0}
+  imagenAprobado: {fileID: 21300000, guid: 8ec355dbdcbb41e439599b598d5b579e, type: 3}
+  imagenFallado: {fileID: 21300000, guid: c033d5bec85169e4f8f334ac2795f3e9, type: 3}
   objetoVisual: {fileID: 0}
   directionalLight: {fileID: 992817048}
   objetosExtra:
