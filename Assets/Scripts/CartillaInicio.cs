@@ -1,79 +1,49 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.UI;
+
 
 public class CartillaInicio : MonoBehaviour
 {
     [Header("Referencias")]
-    public TMP_InputField inputTextoUI;   // Campo TMP_InputField
-    public Image[] imagenes;              // Lista de imágenes (una por sección)
+    public GameObject cartillaPanel;     
+    public TMP_InputField inputFieldTMP; 
+    public Image imagenUI;               
 
     [Header("Configuración")]
-    [TextArea(5, 10)] public string textoOriginal; // Texto con secciones separadas por doble salto de línea
-    public float velocidad = 0.05f;               // Tiempo entre letras
-    public float pausaEntreSecciones = 1.5f;      // Tiempo entre secciones
-
-    private string[] secciones;        // Secciones de texto divididas por "\n\n"
-
-    void OnEnable()
+    [TextArea] public string mensaje;    
+    public float velocidadTexto = 0.05f; 
+    public float tiempoTexto = 2f;      
+    public Sprite[] imagenes;            
+    public float tiempoImagen = 2f;      
+    
+    void Start()
     {
-        // Dividir el texto en secciones por doble salto de línea
-        secciones = textoOriginal.Split(new string[] { "\n\n" }, System.StringSplitOptions.None);
-
-        // Apagar texto e imágenes al inicio
-        if (inputTextoUI != null) inputTextoUI.gameObject.SetActive(false);
-
-        if (imagenes != null)
-        {
-            foreach (var img in imagenes)
-                if (img != null) img.gameObject.SetActive(false);
-        }
-
-        StopAllCoroutines();
-        StartCoroutine(MostrarSecuencia());
+        cartillaPanel.SetActive(true);
+        imagenUI.gameObject.SetActive(false); 
+        StartCoroutine(SecuenciaCartilla());
     }
-
-    IEnumerator MostrarSecuencia()
+   
+    IEnumerator SecuenciaCartilla()
     {
-        for (int index = 0; index < secciones.Length; index++)
+    imagenUI.gameObject.SetActive(true);
+    int indiceImagen = 0;
+    float tiempoAcumulado = 0f;
+    inputFieldTMP.text = "";
+    foreach (char letra in mensaje)
+    {
+        inputFieldTMP.text += letra;
+        tiempoAcumulado += velocidadTexto;
+        if (tiempoAcumulado >= tiempoImagen)
         {
-            string parte = secciones[index];
-
-            // Activar campo de texto
-            if (!inputTextoUI.gameObject.activeSelf)
-                inputTextoUI.gameObject.SetActive(true);
-
-            inputTextoUI.text = ""; // Limpia el campo antes de escribir
-
-            // Manejar imágenes
-            if (imagenes != null && imagenes.Length > 0)
-            {
-                foreach (var img in imagenes)
-                    if (img != null) img.gameObject.SetActive(false);
-
-                if (index < imagenes.Length && imagenes[index] != null)
-                    imagenes[index].gameObject.SetActive(true);
-            }
-
-            // Efecto de escritura letra por letra
-            for (int i = 0; i < parte.Length; i++)
-            {
-                inputTextoUI.text += parte[i];
-                yield return new WaitForSeconds(velocidad);
-            }
-
-            yield return new WaitForSeconds(pausaEntreSecciones);
+            indiceImagen = (indiceImagen + 1) % imagenes.Length;
+            imagenUI.sprite = imagenes[indiceImagen];
+            tiempoAcumulado = 0f;
         }
-
-        // Al finalizar: apagar imágenes y texto
-        if (imagenes != null && imagenes.Length > 0)
-        {
-            foreach (var img in imagenes)
-                if (img != null) img.gameObject.SetActive(false);
-        }
-
-        if (inputTextoUI != null)
-            inputTextoUI.gameObject.SetActive(false);
+        yield return new WaitForSeconds(velocidadTexto);
+    }
+    yield return new WaitForSeconds(tiempoTexto);
+    cartillaPanel.SetActive(false);
     }
 }

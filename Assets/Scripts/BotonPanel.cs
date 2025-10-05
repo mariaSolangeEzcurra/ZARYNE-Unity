@@ -12,7 +12,7 @@ public class BotonPanel : MonoBehaviour
     void Start()
     {
         if (panelUI != null)
-            panelUI.SetActive(false); // Aseguramos que empiece oculto
+            panelUI.SetActive(false); 
 
         if (botonCerrar != null)
         {

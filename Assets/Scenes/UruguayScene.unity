@@ -2636,7 +2636,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.0725434, y: 0}
   m_AnchorMax: {x: 1, y: 0.94422024}
-  m_AnchoredPosition: {x: -83.427, y: 11.069}
+  m_AnchoredPosition: {x: -83.427, y: 11.06897}
   m_SizeDelta: {x: -102.14, y: -58.64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &277573236
@@ -7960,7 +7960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &980829253
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7980,7 +7980,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.97461, y: -0.36697}
+  m_AnchoredPosition: {x: -0.9746094, y: -0.36697388}
   m_SizeDelta: {x: -69.56, y: -54.098}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980829254
@@ -8807,7 +8807,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -13.78595, y: -11.860992}
+  m_AnchoredPosition: {x: -13.786011, y: -11.860962}
   m_SizeDelta: {x: -241.418, y: -104.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1073669770
@@ -9869,14 +9869,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da849a997941324ca0c51b39f8160b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textoUI: {fileID: 534528137}
-  velocidad: 0.05
-  pausaEntreTextos: 1
+  cartillaPanel: {fileID: 0}
+  inputFieldTMP: {fileID: 0}
+  imagenUI: {fileID: 0}
+  mensaje: 
+  velocidadTexto: 0.05
+  tiempoTexto: 2
   imagenes:
-  - {fileID: 1835748095}
-  - {fileID: 1573203574}
-  botonContinuar: {fileID: 0}
-  textoOriginal: 
+  - {fileID: 0}
+  - {fileID: 0}
+  tiempoImagen: 2
 --- !u!1 &1262871547
 GameObject:
   m_ObjectHideFlags: 0
@@ -11845,7 +11847,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.97418, y: -0.36801147}
+  m_AnchoredPosition: {x: -0.9741821, y: -0.36801147}
   m_SizeDelta: {x: -69.561, y: -54.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1498060525
@@ -15409,7 +15411,7 @@ MonoBehaviour:
   cerrarBtn: {fileID: 2014548017}
   objetoVisual: {fileID: 1936366421}
   directionalLight: {fileID: 992817048}
-  objetoExtra: {fileID: 759957109}
+  objetosExtra: []
 --- !u!1 &2099621607
 GameObject:
   m_ObjectHideFlags: 0

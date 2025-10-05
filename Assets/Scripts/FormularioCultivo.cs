@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class FormularioCultivo : MonoBehaviour
 {
-    [Header("Referencias UI - Formulario")]
+    [Header("UI References - Form")]
     public TMP_Dropdown cultivoDropdown;
     public TMP_Dropdown riegoDropdown;
     public TMP_Dropdown frecuenciaDropdown;
@@ -15,20 +15,21 @@ public class FormularioCultivo : MonoBehaviour
     public TMP_Dropdown duracionDropdown;
     public Button guardarBtn;
     public GameObject panelFormulario;
+    public Button cerrarFormularioBtn;
 
-    [Header("Referencias UI - Resultados")]
+    [Header("UI References - Results")]
     public GameObject panelResultados;
     public TextMeshProUGUI resultadoTexto;
     public Button cerrarBtn;
 
-    [Header("Objeto visual (cubo en escena)")]
+    [Header("Visual Object (Cube in Scene)")]
     public GameObject objetoVisual;
 
-    [Header("Simulación Día/Noche")]
+    [Header("Day/Night Simulation")]
     public Light directionalLight;
 
-    [Header("Objetos extra que aparecen según cultivo")]
-    public List<GameObject> objetosExtra; // lista de objetos extra (ej: Cubo, Cápsula, Esfera)
+    [Header("Extra objects that appear by crop")]
+    public List<GameObject> objetosExtra;
 
     private bool isSimulando = false;
     private Canvas canvasPrincipal;
@@ -44,10 +45,8 @@ public class FormularioCultivo : MonoBehaviour
 
         if (panelFormulario != null) panelFormulario.SetActive(false);
         if (panelResultados != null) panelResultados.SetActive(false);
-
         if (objetoVisual != null) objetoVisual.SetActive(true);
 
-        // Ocultar todos los objetos extra al inicio
         foreach (var obj in objetosExtra)
         {
             if (obj != null) obj.SetActive(false);
@@ -64,6 +63,11 @@ public class FormularioCultivo : MonoBehaviour
             cerrarBtn.onClick.RemoveAllListeners();
             cerrarBtn.onClick.AddListener(OnCerrarResultados);
         }
+         if (cerrarFormularioBtn != null)
+        {
+            cerrarFormularioBtn.onClick.RemoveAllListeners();
+            cerrarFormularioBtn.onClick.AddListener(OnCerrarFormulario); 
+        }
     }
 
     public void MostrarFormulario()
@@ -73,8 +77,16 @@ public class FormularioCultivo : MonoBehaviour
 
         if (panelFormulario != null) panelFormulario.SetActive(true);
         if (panelResultados != null) panelResultados.SetActive(false);
-
-        Debug.Log("Formulario mostrado desde el cubo");
+    }
+    
+    private void OnCerrarFormulario()
+    {
+        // Simplemente desactiva el panel del formulario
+        if (panelFormulario != null)
+        {
+            panelFormulario.SetActive(false);
+            Debug.Log("Formulario cerrado.");
+        }
     }
 
     private void OnGuardarPressed()
@@ -108,17 +120,13 @@ public class FormularioCultivo : MonoBehaviour
 
         MostrarResultados();
 
-        // Mostrar solo el objeto que coincide con el cultivo seleccionado
-        string cultivoSeleccionado = GetDropdownTextSafe(cultivoDropdown, "N/D");
+        string cultivoSeleccionado = GetDropdownTextSafe(cultivoDropdown, "N/A");
 
         foreach (var obj in objetosExtra)
         {
             if (obj != null)
             {
-                // Activar solo el que coincida con el nombre
                 obj.SetActive(obj.name == cultivoSeleccionado);
-                if (obj.activeSelf)
-                    Debug.Log($"Objeto extra activado: {obj.name}");
             }
         }
 
@@ -131,116 +139,99 @@ public class FormularioCultivo : MonoBehaviour
         if (canvasPrincipal != null && !canvasPrincipal.gameObject.activeSelf)
             canvasPrincipal.gameObject.SetActive(true);
 
-        string cultivo = GetDropdownTextSafe(cultivoDropdown, "N/D");
-        string metodoRiego = GetDropdownTextSafe(riegoDropdown, "N/D");
-        string frecuenciaStr = GetDropdownTextSafe(frecuenciaDropdown, "N/D");
-        string fertilizante = GetDropdownTextSafe(fertilizanteDropdown, "N/D");
-        string cantidadFert = GetDropdownTextSafe(cantidadDropdown, "N/D");
-        string duracionStr = GetDropdownTextSafe(duracionDropdown, "N/D");
+        string cultivo = GetDropdownTextSafe(cultivoDropdown, "N/A");
+        string metodoRiego = GetDropdownTextSafe(riegoDropdown, "N/A");
+        string frecuenciaStr = GetDropdownTextSafe(frecuenciaDropdown, "N/A");
+        string fertilizante = GetDropdownTextSafe(fertilizanteDropdown, "N/A");
+        string cantidadFert = GetDropdownTextSafe(cantidadDropdown, "N/A");
+        string duracionStr = GetDropdownTextSafe(duracionDropdown, "N/A");
 
-        string mensaje = "Evaluación del Valle de Majes\n\n";
-        mensaje += $"Cultivo: {cultivo}\n";
-        mensaje += $"Método de riego: {metodoRiego}\n";
-        mensaje += $"Frecuencia de riego: {frecuenciaStr}\n";
-        mensaje += $"Fertilizante: {fertilizante}\n";
-        mensaje += $"Cantidad de fertilizante: {cantidadFert}\n";
-        mensaje += $"Duración del ciclo: {duracionStr}\n\n";
+        string mensaje = "Feedback – Majes Valley\n\n";
+        mensaje += $"Crop: {cultivo}\n";
+        mensaje += $"Irrigation method: {metodoRiego}\n";
+        mensaje += $"Irrigation frequency: {frecuenciaStr}\n";
+        mensaje += $"Fertilizer type: {fertilizante}\n";
+        mensaje += $"Fertilizer amount: {cantidadFert}\n";
+        mensaje += $"Cycle duration: {duracionStr}\n\n";
 
         bool aprobado = true;
 
-        if (cultivo == "Arroz")
+        if (cultivo == "Arroz" || cultivo == "Rice")
         {
-            if (metodoRiego != "Riego por gravedad")
+            if (metodoRiego != "Riego por gravedad" && metodoRiego != "Flood irrigation")
             {
-                mensaje += "Error: El arroz necesita riego por gravedad (inundación).\n";
+                mensaje += "Error: Rice traditionally requires flooding to maintain a water layer.\n";
+                mensaje += "Correction: Use flood irrigation with high frequency (continuous water layer).\n\n";
                 aprobado = false;
             }
-            if (frecuenciaStr != "3 veces por semana")
+
+            if (cantidadFert == "Baja" || cantidadFert == "Low")
             {
-                mensaje += "Error: El arroz requiere riegos frecuentes.\n";
+                mensaje += "Error: Rice needs controlled nitrogen and phosphorus for proper growth.\n";
+                mensaje += "Correction: Apply chemical fertilizer, medium dosage (100–150 kg/ha N + P).\n\n";
                 aprobado = false;
             }
-            if (fertilizante == "Orgánico")
+
+            if (duracionStr == "2–3 months")
             {
-                mensaje += "Error: El arroz necesita fertilizante químico o mixto.\n";
-                aprobado = false;
-            }
-            if (cantidadFert == "Baja")
-            {
-                mensaje += "Error: El arroz requiere fertilización media como mínimo.\n";
-                aprobado = false;
-            }
-            if (duracionStr != "4–6 meses")
-            {
-                mensaje += "Error: El arroz se cultiva en ciclos de 4–6 meses.\n";
+                mensaje += "Error: Rice takes longer to complete its growth and ripening.\n";
+                mensaje += "Correction: Medium cycle (4–5 months).\n\n";
                 aprobado = false;
             }
         }
-        else if (cultivo == "Maíz chala")
+        else if (cultivo == "Maíz chala" || cultivo == "Forage Maize")
         {
-            if (metodoRiego == "Riego por gravedad")
+            if (metodoRiego == "Riego por gravedad" || metodoRiego == "Flood irrigation")
             {
-                mensaje += "Error parcial: El maíz no requiere inundación, se recomienda aspersión o goteo.\n";
+                mensaje += "Partial error: Maize does not need flooding; excess water may cause fungal diseases.\n";
+                mensaje += "Correction: Use sprinkler or drip irrigation with medium frequency (every 3–4 days).\n\n";
                 aprobado = false;
             }
-            if (frecuenciaStr != "1–2 veces por semana")
+
+            if (cantidadFert == "Baja" || cantidadFert == "Low")
             {
-                mensaje += "Error: El maíz requiere riego de 1–2 veces por semana.\n";
+                mensaje += "Error: Forage maize requires high nitrogen levels for biomass production.\n";
+                mensaje += "Correction: Chemical fertilizer, medium dosage (150–200 kg/ha N + P).\n\n";
                 aprobado = false;
             }
-            if (fertilizante == "Orgánico")
+
+            if (duracionStr == "2–3 months")
             {
-                mensaje += "Error: El maíz necesita fertilizante químico o mixto.\n";
-                aprobado = false;
-            }
-            if (cantidadFert == "Baja")
-            {
-                mensaje += "Error: El maíz necesita fertilización media.\n";
-                aprobado = false;
-            }
-            if (duracionStr != "4–6 meses")
-            {
-                mensaje += "Error: El maíz tiene un ciclo de 4–6 meses.\n";
+                mensaje += "Error: Maize chala takes longer to develop enough forage volume.\n";
+                mensaje += "Correction: Medium cycle (4–5 months).\n\n";
                 aprobado = false;
             }
         }
         else if (cultivo == "Alfalfa")
         {
-            if (metodoRiego == "Riego por gravedad")
+            if (metodoRiego == "Riego por gravedad" || metodoRiego == "Flood irrigation")
             {
-                mensaje += "Error: La alfalfa se riega mejor con aspersión o goteo.\n";
+                mensaje += "Partial error: Alfalfa tolerates flooding but it is less efficient and increases root damage risk.\n";
+                mensaje += "Correction: Sprinkler or drip irrigation, medium frequency (1–2 times per week).\n\n";
                 aprobado = false;
             }
-            if (frecuenciaStr != "1–2 veces por semana")
+
+            if (fertilizante == "Químico" || fertilizante == "Chemical")
             {
-                mensaje += "Error: La alfalfa requiere riego de 1–2 veces por semana.\n";
+                mensaje += "Error: Alfalfa fixes nitrogen naturally; pure chemical fertilizer is unnecessary.\n";
+                mensaje += "Correction: Use mixed fertilization (P + K + organic matter), medium dosage.\n\n";
                 aprobado = false;
             }
-            if (fertilizante == "Químico")
+
+            if (duracionStr == "2–3 months")
             {
-                mensaje += "Error parcial: La alfalfa fija nitrógeno, se recomienda orgánico o mixto.\n";
-            }
-            if (cantidadFert == "Alta")
-            {
-                mensaje += "Error: La alfalfa no requiere dosis altas, se recomienda baja o media.\n";
-                aprobado = false;
-            }
-            if (duracionStr != "8–12 meses")
-            {
-                mensaje += "Error: La alfalfa es perenne y dura 8–12 meses.\n";
+                mensaje += "Error: Alfalfa is perennial and produces for several years.\n";
+                mensaje += "Correction: Long cycle (perennial, multiple cuts per year).\n\n";
                 aprobado = false;
             }
         }
 
-        if (aprobado)
-            mensaje += "\nResultado: Aprobado";
-        else
-            mensaje += "\nResultado: Desaprobado";
+        mensaje += "Evaluation:\n";
+        mensaje += aprobado ? "Approved: Crop management is consistent with Majes Valley standards." :
+                              "Failed: Some critical decisions (irrigation, fertilization, or cycle) are incorrect.";
 
         if (resultadoTexto != null) resultadoTexto.text = mensaje;
         if (panelResultados != null) panelResultados.SetActive(true);
-
-        Debug.Log("Resultados mostrados");
     }
 
     private void OnCerrarResultados()
