@@ -21,7 +21,20 @@ MemoryCaptures/
 *.opendb
 *.VC.db
 
+<<<<<<< HEAD
+=======
+# Visual Studio cache folders
+.vs/
+
+>>>>>>> Geraldine
 # Package files
 *.apk
 *.aab
 *.unitypackage
+<<<<<<< HEAD
+=======
+
+# VS Code settings should be committed (optional)
+!.vscode/
+
+>>>>>>> Geraldine

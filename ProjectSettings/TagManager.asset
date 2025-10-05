@@ -2,7 +2,11 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
+<<<<<<< HEAD
   serializedVersion: 3
+=======
+  serializedVersion: 2
+>>>>>>> Geraldine
   tags: []
   layers:
   - Default
@@ -11,7 +15,11 @@ TagManager:
   - 
   - Water
   - UI
+<<<<<<< HEAD
   - Parcela
+=======
+  - 
+>>>>>>> Geraldine
   - 
   - 
   - 
@@ -50,3 +58,30 @@ TagManager:
   - Light Layer 5
   - Light Layer 6
   - Light Layer 7
+<<<<<<< HEAD
+=======
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+>>>>>>> Geraldine

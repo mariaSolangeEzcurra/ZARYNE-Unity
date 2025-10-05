@@ -7,9 +7,17 @@ public class ChangeSceneButton : MonoBehaviour
     {
         if (string.IsNullOrEmpty(sceneName))
         {
+<<<<<<< HEAD
             Debug.LogWarning("El nombre de la escena estÃ¡ vacÃ­o");
+=======
+            Debug.LogWarning("El nombre de la escena está vacío");
+>>>>>>> Geraldine
             return;
         }
         SceneManager.LoadScene(sceneName);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Geraldine
