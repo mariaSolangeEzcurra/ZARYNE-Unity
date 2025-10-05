@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class ObjetoInteractivo : MonoBehaviour
+public class ParcelaPeru : MonoBehaviour
 {
-    public FormularioCultivo formularioCultivo; // arrastrar el Canvas (con script) al Inspector
+    public FormularioCultivo formularioCultivo; 
 
     private void OnMouseDown()
     {

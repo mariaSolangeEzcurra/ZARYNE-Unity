@@ -4,7 +4,7 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
-public class FormularioCultivo : MonoBehaviour
+public class FormularioUruguay : MonoBehaviour
 {
     [Header("UI References - Form")]
     public TMP_Dropdown cultivoDropdown;
@@ -23,17 +23,17 @@ public class FormularioCultivo : MonoBehaviour
     public Button cerrarBtn;
 
     [Header("Result Images")]
-    public Image resultadoImagen;             
-    public Sprite imagenAprobado;           
-    public Sprite imagenFallado;   
+    public Image resultadoImagen;
+    public Sprite imagenAprobado;
+    public Sprite imagenFallado;
 
-    [Header("Visual Object (Cube in Scene)")]
+    [Header("Visual Object (Scene Element)")]
     public GameObject objetoVisual;
 
     [Header("Day/Night Simulation")]
     public Light directionalLight;
 
-    [Header("Extra objects that appear by crop")]
+    [Header("Extra objects by crop")]
     public List<GameObject> objetosExtra;
 
     private bool isSimulando = false;
@@ -126,7 +126,6 @@ public class FormularioCultivo : MonoBehaviour
         MostrarResultados();
 
         string cultivoSeleccionado = GetDropdownTextSafe(cultivoDropdown, "N/A");
-
         foreach (var obj in objetosExtra)
         {
             if (obj != null)
@@ -146,105 +145,103 @@ public class FormularioCultivo : MonoBehaviour
 
         string cultivo = GetDropdownTextSafe(cultivoDropdown, "N/A");
         string metodoRiego = GetDropdownTextSafe(riegoDropdown, "N/A");
-        string frecuenciaStr = GetDropdownTextSafe(frecuenciaDropdown, "N/A");
+        string frecuencia = GetDropdownTextSafe(frecuenciaDropdown, "N/A");
         string fertilizante = GetDropdownTextSafe(fertilizanteDropdown, "N/A");
-        string cantidadFert = GetDropdownTextSafe(cantidadDropdown, "N/A");
-        string duracionStr = GetDropdownTextSafe(duracionDropdown, "N/A");
+        string cantidad = GetDropdownTextSafe(cantidadDropdown, "N/A");
+        string duracion = GetDropdownTextSafe(duracionDropdown, "N/A");
 
-        string mensaje = "Feedback – Majes Valley\n\n";
+        string mensaje = "Feedback – Uruguay (Rincón del Colorado, Canelones)\n\n";
         mensaje += $"Crop: {cultivo}\n";
-        mensaje += $"Irrigation method: {metodoRiego}\n";
-        mensaje += $"Irrigation frequency: {frecuenciaStr}\n";
+        mensaje += $"Irrigation type: {metodoRiego}\n";
+        mensaje += $"Irrigation frequency: {frecuencia}\n";
         mensaje += $"Fertilizer type: {fertilizante}\n";
-        mensaje += $"Fertilizer amount: {cantidadFert}\n";
-        mensaje += $"Cycle duration: {duracionStr}\n\n";
+        mensaje += $"Fertilizer dosage: {cantidad}\n";
+        mensaje += $"Cycle duration: {duracion}\n\n";
 
         bool aprobado = true;
-        if (cultivo == "Arroz" || cultivo == "Rice")
+
+        if (cultivo == "Corn" || cultivo == "Maíz")
         {
-            if (metodoRiego != "Riego por gravedad" && metodoRiego != "Flood irrigation")
+            if (metodoRiego.Contains("Flood") || metodoRiego.Contains("Minimal"))
             {
-                mensaje += "Error: Rice traditionally requires flooding to maintain a water layer.\n";
-                mensaje += "Correction: Use flood irrigation with high frequency (continuous water layer).\n\n";
+                mensaje += "Error: Corn needs regular water, especially during flowering.\n";
+                mensaje += "Correction: Use sprinkler or drip irrigation 💧 with medium–high frequency for stable yields.\n\n";
                 aprobado = false;
             }
 
-            if (cantidadFert == "Baja" || cantidadFert == "Low")
+            if (fertilizante == "Organic")
             {
-                mensaje += "Error: Rice needs controlled nitrogen and phosphorus for proper growth.\n";
-                mensaje += "Correction: Apply chemical fertilizer, medium dosage (100–150 kg/ha N + P).\n\n";
+                mensaje += "Partial error: Organic alone may not supply enough nitrogen for high-demand corn.\n";
+                mensaje += "Correction: Use chemical or mixed fertilizer with controlled nitrogen.\n\n";
                 aprobado = false;
             }
 
-            if (duracionStr == "2–3 months")
+            if (duracion == "Long (6–7 months)" || duracion.Contains("Long"))
             {
-                mensaje += "Error: Rice takes longer to complete its growth and ripening.\n";
-                mensaje += "Correction: Medium cycle (4–5 months).\n\n";
+                mensaje += "Error: Corn matures in about 4 months in this region.\n";
+                mensaje += "Correction: Medium cycle (~4 months).\n\n";
                 aprobado = false;
             }
         }
-        else if (cultivo == "Maíz chala" || cultivo == "Forage Maize")
+        else if (cultivo == "Grapes" || cultivo == "Uvas")
         {
-            if (metodoRiego == "Riego por gravedad" || metodoRiego == "Flood irrigation")
+            if (metodoRiego.Contains("Flood") || metodoRiego.Contains("Sprinkler"))
             {
-                mensaje += "Partial error: Maize does not need flooding; excess water may cause fungal diseases.\n";
-                mensaje += "Correction: Use sprinkler or drip irrigation with medium frequency (every 3–4 days).\n\n";
+                mensaje += "Error: Grapes are highly sensitive to excess water; fruit quality drops.\n";
+                mensaje += "Correction: Drip irrigation with low frequency 💧 is optimal.\n\n";
                 aprobado = false;
             }
 
-            if (cantidadFert == "Baja" || cantidadFert == "Low")
+            if (cantidad.Contains("High"))
             {
-                mensaje += "Error: Forage maize requires high nitrogen levels for biomass production.\n";
-                mensaje += "Correction: Chemical fertilizer, medium dosage (150–200 kg/ha N + P).\n\n";
+                mensaje += "Error: Excess nitrogen reduces grape quality.\n";
+                mensaje += "Correction: Medium dosage, minimal nitrogen, optional organic compost.\n\n";
                 aprobado = false;
             }
 
-            if (duracionStr == "2–3 months")
+            if (duracion.Contains("Short"))
             {
-                mensaje += "Error: Maize chala takes longer to develop enough forage volume.\n";
-                mensaje += "Correction: Medium cycle (4–5 months).\n\n";
+                mensaje += "Error: Grapes require ~6–7 months to reach harvest.\n";
+                mensaje += "Correction: Long cycle (~6–7 months).\n\n";
                 aprobado = false;
             }
         }
-        else if (cultivo == "Alfalfa")
+        else if (cultivo == "Tomatoes" || cultivo == "Tomates")
         {
-            if (metodoRiego == "Riego por gravedad" || metodoRiego == "Flood irrigation")
+            if (metodoRiego.Contains("Minimal"))
             {
-                mensaje += "Partial error: Alfalfa tolerates flooding but it is less efficient and increases root damage risk.\n";
-                mensaje += "Correction: Sprinkler or drip irrigation, medium frequency (1–2 times per week).\n\n";
+                mensaje += "Error: Tomatoes need steady water to avoid stress and fruit cracking.\n";
+                mensaje += "Correction: Sprinkler or drip irrigation 💧 at medium frequency (1–2 times/week).\n\n";
                 aprobado = false;
             }
 
-            if (fertilizante == "Químico" || fertilizante == "Chemical")
+            if (fertilizante == "Chemical")
             {
-                mensaje += "Error: Alfalfa fixes nitrogen naturally; pure chemical fertilizer is unnecessary.\n";
-                mensaje += "Correction: Use mixed fertilization (P + K + organic matter), medium dosage.\n\n";
+                mensaje += "Partial error: Tomatoes need balanced NPK for proper fruit development.\n";
+                mensaje += "Correction: Use mixed fertilizer with balanced NPK.\n\n";
                 aprobado = false;
             }
 
-            if (duracionStr == "2–3 months")
+            if (duracion.Contains("Long"))
             {
-                mensaje += "Error: Alfalfa is perennial and produces for several years.\n";
-                mensaje += "Correction: Long cycle (perennial, multiple cuts per year).\n\n";
+                mensaje += "Error: Tomatoes mature in ~3–4 months.\n";
+                mensaje += "Correction: Short–medium cycle (~3–4 months).\n\n";
                 aprobado = false;
             }
         }
 
         mensaje += "Evaluation:\n";
-        mensaje += aprobado ? 
-            "Approved: Crop management is consistent with Majes Valley standards." :
-            "Failed: Some critical decisions (irrigation, fertilization, or cycle) are incorrect.";
+        mensaje += aprobado
+            ? "Approved: Crop management is consistent with Rincón del Colorado standards."
+            : "Failed: Some critical decisions (irrigation, fertilization, or cycle) are incorrect.";
 
         if (resultadoTexto != null)
             resultadoTexto.text = mensaje;
+
         if (resultadoImagen != null)
         {
-            if (aprobado && imagenAprobado != null)
-                resultadoImagen.sprite = imagenAprobado;
-            else if (!aprobado && imagenFallado != null)
-                resultadoImagen.sprite = imagenFallado;
+            resultadoImagen.sprite = aprobado ? imagenAprobado : imagenFallado;
         }
-
         if (panelResultados != null)
             panelResultados.SetActive(true);
     }
@@ -259,13 +256,5 @@ public class FormularioCultivo : MonoBehaviour
         if (dd == null || dd.options == null || dd.options.Count == 0) return defaultValue;
         int idx = Mathf.Clamp(dd.value, 0, dd.options.Count - 1);
         return dd.options[idx].text;
-    }
-
-    private int ParseDropdownIntSafe(TMP_Dropdown dd, int fallback)
-    {
-        string txt = GetDropdownTextSafe(dd, fallback.ToString());
-        int val;
-        if (int.TryParse(txt, out val)) return val;
-        return fallback;
     }
 }
